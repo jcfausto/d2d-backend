@@ -53,7 +53,7 @@ Namespaces in Redis - This will keep data organized and easy to query.
 ## Pre-commit hook
 
 There's a pre-commit hook that will lint the project and will test it before allowing the commit.
-Copy pre-commit.st to .git/hooks/
+Copy pre-commit.sh to .git/hooks/
 
 ## Rake Tasks
 
