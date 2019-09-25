@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/usr/src/app
     healthcheck:
-      test: curl --fail -s http://localhost:3000/ || exit 1
+      test: curl --fail -s http://localhost:3000/api/v1/vehicles/health || exit 1
       interval: 1m
       timeout: 10s
       retries: 3
