@@ -39,8 +39,8 @@ printf "${CLEAR_LINE}🎉${GREEN}   Rubocop is happy.${NO_COLOR}\n"
 
 printf "🕵️    RSpec Testing..."
 
-FAILS=`bundle exec rspec --format progress | grep -E '\d failure(s?)' -o | awk '{print $1}'`
-ERRORS=`bundle exec rspec --format progress | grep -E '\d error(s?)' -o | awk '{print $1}'`
+FAILS=`rake test | grep -E '\d failure(s?)' -o | awk '{print $1}'`
+ERRORS=`rake test | grep -E '\d error(s?)' -o | awk '{print $1}'`
 
 if [ ! -z "$FAILS" ] && [ $FAILS -ne 0 ]; then
     echo -e "${CLEAR_LINE}${RED}✋   Can't commit! You've broken $FAILS tests!"
