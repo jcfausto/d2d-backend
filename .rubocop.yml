@@ -2,3 +2,7 @@ AllCops:
   Exclude:
     - './swagger-ui/'
     - 'config.ru'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
