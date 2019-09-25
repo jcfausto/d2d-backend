@@ -36,12 +36,55 @@ Location updates
 
 Will stream location updates to connected clientes using WebSockets?
 
+## Dependencies
+
+TBD
+
 ## Infrastructure
 
 Infrastructure
 	- Dockerized solution (which could run later on a K8s cluster for instance).
 	- Deployed on Heroku (as an alternative).
 
+### Run on Docker
+
+```bash
+$ docker-compose build # to build the image
+$ docker-compose up    # to start the container
+```
+
+or
+
+```bash
+$ docker-compose up --build # to build the image and start
+                            # the container right after the build.
+```
+
+### Rake Tasks
+
+#### Start the server
+
+```bash
+rake start
+```
+
+#### Run API tests
+
+```bash
+rake test
+```
+
+### Pre-commit hook
+
+There's a pre-commit hook that will lint the project and will test it before allowing the commit.
+
+If you're not using pre-commit hooks yet, after cloning this repo, execute the command below:
+
+```bash
+$ cp pre-commit .git/hooks/
+```
+
+If you're using pre-commit hooks already, copy the content of the pre-commit into your .git/hooks/pre-commit hook file.
 
 # Notes (WIP)
 
@@ -49,16 +92,3 @@ Namespaces in Redis - This will keep data organized and easy to query.
 	- registry - Containing the registered vehicles.
 		○ Ex: registry:"vehicle":"abc123"
 	- position - Containing the last reported vehicle position
-
-## Pre-commit hook
-
-There's a pre-commit hook that will lint the project and will test it before allowing the commit.
-Copy pre-commit.sh to .git/hooks/
-
-## Rake Tasks
-
-### Run API Tests
-
-```bash
-rake test
-```
