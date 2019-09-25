@@ -20,6 +20,18 @@ module APIv1
       rescue StandardError
         status :internal_server_error
       end
+
+      desc 'De-registers a vehicle'
+      params do
+        requires :id, type: String, desc: 'Vehicle UUID'
+      end
+      delete ':id' do
+        DeRegisterService.new.call(params[:id])
+        status :no_content
+        body false
+      rescue StandardError
+        status :internal_server_error
+      end
     end
   end
 end

@@ -26,4 +26,12 @@ describe APIv1::VehicleRegistry do
       expect(last_response.status).to eq(204)
     end
   end
+
+  describe 'DELETE /vehicles/:id' do
+    it 'should de-register a vehicle' do
+      delete "/vehicles/#{vehicle_id}"
+      expect(last_response.status).to eq(204)
+      expect(last_response.body).to eq('')
+    end
+  end
 end
