@@ -9,10 +9,21 @@ describe APIv1::VehicleRegistry do
     APIv1::VehicleRegistry
   end
 
+  let(:content_type) { { 'Content-Type' => 'application/json' } }
+  let(:vehicle_id) { 'b49b4c08-3cc9-452f-a812-146cf8864409' }
+  let(:payload) { { id: vehicle_id } }
+
   describe 'GET /vehicles/health' do
     it 'should be healthy' do
       get '/vehicles/health'
       expect(last_response.status).to eq(200)
+    end
+  end
+
+  describe 'POST /vehicles' do
+    it 'should register a vehicle' do
+      post '/vehicles', payload, content_type
+      expect(last_response.status).to eq(204)
     end
   end
 end

@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  redis:
+    image: redis:5.0-alpine
+    container_name: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    volumes:
+      - ./redis:/data
+    restart: always
+
   api:
     build: .
     image: d2d/api
@@ -11,6 +20,10 @@ services:
       - .:/usr/src/app
     healthcheck:
       test: curl --fail -s http://localhost:3000/api/v1/vehicles/health || exit 1
-      interval: 1m
+      interval: 30s
       timeout: 10s
       retries: 3
+    links:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis

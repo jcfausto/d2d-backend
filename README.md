@@ -38,7 +38,7 @@ Will stream location updates to connected clientes using WebSockets?
 
 ## Dependencies
 
-TBD
+- Redis
 
 ## Infrastructure
 

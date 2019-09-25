@@ -8,6 +8,7 @@ gem 'grape-entity'
 gem 'grape-swagger'
 gem 'puma'
 gem 'rack'
+gem 'redis', '>= 3.2.0'
 gem 'require_all'
 
 group :development do
@@ -15,6 +16,7 @@ group :development do
 end
 
 group :test do
+  gem 'mock_redis'
   gem 'rack-test'
   gem 'rspec'
   gem 'shoulda-matchers'
