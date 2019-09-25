@@ -2,8 +2,8 @@
 
 # Service Object responsible for registering
 # a vehicle
-class RegisterService
+class RegisterService < BaseService
   def call(vehicle_id)
-    Redis.current.set(vehicle_id, true)
+    Redis.current.set("#{registry_namespace}:#{vehicle_id}", true)
   end
 end
