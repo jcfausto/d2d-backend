@@ -74,6 +74,75 @@ rake start
 rake test
 ```
 
+#### Run API Performance Tests
+
+Performance tests using Apache Benchmark can be done by executing the command below:
+
+```bash
+rake perftest
+```
+
+Default parameters are: 2000 requests being made by 100 concurrent clients. Each client will fire 20 request and they'll do that in parallel.
+
+Sample output:
+
+This is ApacheBench, Version 2.3 <$Revision: 1826891 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient)
+Completed 200 requests
+Completed 400 requests
+Completed 600 requests
+Completed 800 requests
+Completed 1000 requests
+Completed 1200 requests
+Completed 1400 requests
+Completed 1600 requests
+Completed 1800 requests
+Completed 2000 requests
+Finished 2000 requests
+
+
+Server Software:
+Server Hostname:        127.0.0.1
+Server Port:            3000
+
+Document Path:          /api/v1/vehicles/67209670-1788-43a6-affb-c18058df1031/locations
+Document Length:        0 bytes
+
+Concurrency Level:      100
+Time taken for tests:   2.303 seconds
+Complete requests:      2000
+Failed requests:        0
+Total transferred:      54000 bytes
+Total body sent:        668000
+HTML transferred:       0 bytes
+Requests per second:    868.46 [#/sec] (mean)
+Time per request:       115.146 [ms] (mean)
+Time per request:       1.151 [ms] (mean, across all concurrent requests)
+Transfer rate:          22.90 [Kbytes/sec] received
+                        283.27 kb/s sent
+                        306.17 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.4      0       3
+Processing:    16  112  18.8    110     184
+Waiting:       14  110  18.7    108     181
+Total:         19  112  18.7    110     184
+
+Percentage of the requests served within a certain time (ms)
+  50%    110
+  66%    116
+  75%    120
+  80%    124
+  90%    135
+  95%    146
+  98%    155
+  99%    166
+ 100%    184 (longest request)
+
 ### Pre-commit hook
 
 There's a pre-commit hook that will lint the project and will test it before allowing the commit.
