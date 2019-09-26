@@ -10,6 +10,7 @@ module APIv1
     prefix :api
 
     mount APIv1::VehicleRegistry
+    mount APIv1::VehicleLocation
 
     add_swagger_documentation api_version: 'v1',
                               info: {
