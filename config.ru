@@ -7,7 +7,7 @@ require File.expand_path('./config/environment', __dir__)
 
 # Swagger-UI for seeing the API spec
 use Rack::Static,
-  root: File.expand_path('./swagger-ui', __dir__),
+  root: File.expand_path('./public/swagger-ui', __dir__),
   urls: ["/css","/fonts","/images","/lang","/lib"],
   index: 'index.html'
 
