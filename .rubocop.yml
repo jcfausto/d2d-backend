@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - './swagger-ui/'
     - 'config.ru'
+    - './lib/tasks/*.rake'
 
 Metrics/BlockLength:
   Exclude:
