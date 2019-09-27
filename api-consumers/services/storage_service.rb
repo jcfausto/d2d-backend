@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../models/location_update'
+
 # Service Object responsible for storing
 # vehicle locations on a permanent storage
 class StorageService

@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-require 'dotenv'
-
 ENV['RACK_ENV'] ||= 'development'
-Dotenv.load(File.expand_path("../.env.#{ENV['RACK_ENV']}", __dir__))
-
 require File.expand_path('../config/initializers/mongoid', __dir__)
 
-require_relative 'storage_consumer'
+require 'dotenv'
+Dotenv.load(File.expand_path("../.env.#{ENV['RACK_ENV']}", __dir__))
+
+require_relative 'streaming_server'
 
 trap('INT') do
   puts
@@ -15,4 +14,4 @@ trap('INT') do
   exit
 end
 
-StorageConsumer.new.start if ARGV && ARGV[0] == 'start'
+StreamingServer.new.start if ARGV && ARGV[0] == 'start'

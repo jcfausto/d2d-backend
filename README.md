@@ -62,11 +62,24 @@ $ docker-compose up --build # to build the image and start
 
 ### Rake Tasks
 
-#### Start the server
+#### Start the API server
 
 ```bash
-rake start
+rake start:api
 ```
+
+#### Start the API Consumer Service
+
+```bash
+rake start:consumers
+```
+
+#### Start the Streaming Service
+```bash
+ruby api-streaming/init.rb start
+```
+
+Note: Not sure why it doesn't work using a Rake task. To be investigated.
 
 #### Run API tests
 

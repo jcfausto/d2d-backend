@@ -10,6 +10,11 @@ namespace :start do
   task :consumers do
     sh %( ruby ./api-consumers/init.rb start )
   end
+
+  desc 'Start Streaming API'
+  task :streaming do
+    sh %( ruby api-streaming/init.rb start )
+  end
 end
 
 desc 'Default task: start:api'

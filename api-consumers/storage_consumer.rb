@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require File.expand_path('../config/environment', __dir__)
-
 require 'redis'
 require 'json'
+require 'logger'
+require_relative 'services/storage_service'
 
 # Consumes published messages and store them
 # on permanent storage
@@ -11,12 +11,13 @@ class StorageConsumer
   def initialize
     @redis = Redis.new
     @channel = ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] || 'locations'
+    @log = Logger.new(STDOUT)
   end
 
   def start
     subscribe
   rescue Redis::BaseConnectionError => e
-    debug "#{e}, retrying in 5 seconds"
+    @log.info "#{e}, retrying in 5 seconds"
     sleep 5
     retry
   end
@@ -25,8 +26,9 @@ class StorageConsumer
 
   def subscribe
     @redis.subscribe(@channel) do |on|
-      puts "Subscribed to channel ##{@channel}"
+      @log.info "Subscribed to channel ##{@channel}"
       on.message do |_channel, msg|
+        @log.debug msg
         StorageService.new.call(msg)
       end
     end
