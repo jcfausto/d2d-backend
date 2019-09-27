@@ -2,5 +2,7 @@
 
 desc 'Run API Tests'
 task :test do
-  exec 'RUN_COVERAGE=true bundle exec rspec -fd'
+  sh %( redis-server --daemonize yes && \
+        RUN_COVERAGE=true bundle exec rspec -fd && \
+        redis-cli shutdown )
 end

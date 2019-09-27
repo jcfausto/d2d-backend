@@ -20,10 +20,4 @@ end
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods, api: true
-
-  config.before(:each) do
-    mock_redis = MockRedis.new
-    allow(Redis).to receive(:new).and_return(mock_redis)
-    allow(Redis.current).to receive(:publish).and_return(true)
-  end
 end
