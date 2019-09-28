@@ -11,12 +11,13 @@ class StreamingServer
   end
 
   def start
-    ENV['STREAMING_SERVER_WS_HOST'] ||= '127.0.0.1'
+    @log.info 'Streaming server starting...'
+    ENV['STREAMING_SERVER_WS_HOST'] ||= '0.0.0.0'
     ENV['STREAMING_SERVER_WS_PORT'] ||= 9292
 
     EM.run do
-      EM::WebSocket.run(host: ENV['STREAMING_SERVER_WS_HOST'],
-                        port: ENV['STREAMING_SERVER_WS_PORT']) do |ws|
+      EM::WebSocket.start(host: ENV['STREAMING_SERVER_WS_HOST'],
+                          port: ENV['STREAMING_SERVER_WS_PORT']) do |ws|
         setup_events_for(ws)
       end
     end

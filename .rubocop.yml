@@ -3,6 +3,7 @@ AllCops:
     - './swagger-ui/'
     - 'config.ru'
     - './lib/tasks/*.rake'
+    - './app/geocalc/distance.rb'
 
 Metrics/BlockLength:
   Exclude:

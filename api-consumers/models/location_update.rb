@@ -2,11 +2,10 @@
 
 require 'mongoid'
 
-# Model representing a location update
+# Mongoid document model for a location
 class LocationUpdate
   include Mongoid::Document
-
-  store_in collection: :locations
+  store_in collection: :locations, database: :d2d
 
   field :vehicle_id, type: String
   field :lat, type: Float

@@ -1,6 +1,12 @@
 development:
   clients:
     default:
-      database: locations
+      database: d2d_db
+      hosts:
+        - localhost:27017
+test:
+  clients:
+    default:
+      database: test_d2d_db
       hosts:
         - localhost:27017

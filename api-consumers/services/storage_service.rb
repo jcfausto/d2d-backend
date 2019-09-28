@@ -4,6 +4,9 @@ require_relative '../models/location_update'
 
 # Service Object responsible for storing
 # vehicle locations on a permanent storage
+# Arguments:
+#   location: json object compliant with
+#             pec/support/api/schemas/location_update.json
 class StorageService
   def call(location)
     hash = location_hash(location)
@@ -19,10 +22,10 @@ class StorageService
   private
 
   def location_hash(location)
-    hash = JSON.parse(location)
-    hash['vehicle_id'] = hash.delete('id')
-    hash
+    JSON.parse(location)
+    # hash['vehicle_id'] = hash.delete('id')
+    # hash
   rescue JSON::ParserError => e
-    puts "Invalid location #{location}: #{e}"
+    puts "Error parsing location #{location}: #{e}"
   end
 end

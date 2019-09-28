@@ -22,6 +22,9 @@ group :development do
 end
 
 group :test do
+  gem 'database_cleaner'
+  gem 'json-schema'
+  gem 'mongoid-rspec'
   gem 'rack-test'
   gem 'rspec'
   gem 'shoulda-matchers'

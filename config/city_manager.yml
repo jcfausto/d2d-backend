@@ -1,0 +1,14 @@
+default: &default
+  limit_radius_in_km: 3.5
+  central_point:
+    lat: 52.53
+    lng: 13.403
+
+production:
+  <<: *default
+
+development:
+  <<: *default
+
+test:
+  <<: *default

@@ -20,7 +20,7 @@
   webSocket.onmessage = function (event) {
     console.log(event.data);
     var msg = JSON.parse(event.data);
-    vehicle_id = msg["id"]
+    vehicle_id = msg["vehicle_id"]
     let lat = msg["lat"]
     let lng = msg["lng"]
     var vehicle = vehicles.get(vehicle_id)
