@@ -13,18 +13,12 @@ class StorageService
     LocationUpdate.create(hash)
   rescue Mongo::OperationFailure => e
     puts "Location #{location} not stored: #{e}"
-  rescue Mongo::MongoRubyError => e
-    puts "Ruby Error: #{e}"
-  rescue Mongo::MongoDBError => e
-    puts "DB Error: #{e}"
   end
 
   private
 
   def location_hash(location)
     JSON.parse(location)
-    # hash['vehicle_id'] = hash.delete('id')
-    # hash
   rescue JSON::ParserError => e
     puts "Error parsing location #{location}: #{e}"
   end
