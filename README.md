@@ -1,117 +1,170 @@
 # door2door Backend Exercise
 
-## APIs
+## API Overview
 
-*Design Principles*
+The solution is composed of 3 components.
 
-	- Well documented. Documentation as a Code (OpenAPI/Swagger).
-	- Well tested. TDD.
-	- Linted (Rubocop, eslint).
-	- Performant (non-blocking, no I/O)
-	- Observable (logs, metrics, tracing?)
-  - Decoupling Writes from Reads (CQRS like)
-	  - Location service will only write location updates.
-	  - Streaming service will only read location updates and will stream them to clients (Firehose).
-	  - Location will not hold state.
-	  - Streaming will not hold state (fire-and-forget).
-	  - State will be hold by an in-memory DB (Redis).
+- Vehicles API
+- Storage Consumer
+- Streaming Server
 
-### Vehicle Registry API
+![alt text](support/solution-overview.png)
 
-Registration / De-Registration
-	- It's like a session. It starts when the V asks for registration, is deleted when the V is de-registered. (Redis is good to handle sessions).
+#### Tech Stack
 
-### Vehicle Location API
+- Language: Ruby 2.6.3
+- Frameworks:
+	- Grape: for the API.
+- Technologies
+	- Redis: for the store and pub/sub mechanism.
+	- MongoDB: for the permanent storage.
+	- Eventmachine and WebSockets for the Streaming Server.
 
-Location updates
-	- Vehicles will report location every 3 seconds.
-	- Only registered vehicles will send updates.
-	- Valid location updates need to have navigation bearing added to the notification object.
-	- Valid location updates need to be streamed to clients as real-time as possible.
-	- Valid location updates need to be stored for later consumption by an analytics tool.
-	- Invalid location updates should be disregarded.
-	- It's basically JSON objects (No need for a relational DB).
+### Vehicles API
 
-### Location Streaming API
+**Version:** 1
 
-Will stream location updates to connected clientes using WebSockets?
+[API Specification](https://github.com/jcfausto/d2d-backend/)
 
-## Dependencies
+This API offer following services.
 
+- Vehicle registration / de-registration.
+- Vehicle location update
+
+**Supported Operations**
+
+| Verb | Endpoint | Payload | Response | Description |
+| -----------| --------------|----|----|------------ |
+| GET | /api/v1/vehicles/health || {"status":"OK"} | Healthcheck |
+| POST | /api/v1/vehicles	| ```{"id":"some-uuid"}``` | No content | Registers a vehicle |
+| DELETE | /api/v1/vehicles/:uuid	|| No content | De-registers a vehicle |
+| POST | /api/v1/vehicles/:uuid/locations	|| {"status":"OK"} | Receive vehicle location updates |
+
+### Streaming Server
+
+WebSocket server that streams vehicle location updates to connected clients.
+
+JSON Objects are streamed to clients according to the following schema:
+
+[Location Update JSON Schema](spec/support/api/schemas/location_update.json)
+
+```json
+{
+  "type": "object",
+  "required": ["lat", "lng", "at", "vehicle_id"],
+  "properties": {
+    "lat": { "type":"number" },
+    "lng": { "type":"number" },
+    "at": { "type":"string" },
+    "vehicle_id": { "type":"string" }
+  }
+}
+```
+
+Example:
+
+```javascript
+// Client validation (Browser)
+// <script src="https://cdn.jsdelivr.net/npm/json-schema@0.2.5/lib/validate.min.js"></script>
+
+const schema = {
+  "type": "object",
+  "required": ["lat", "lng", "at", "vehicle_id"],
+  "properties": {
+    "lat": { "type":"number" },
+    "lng": { "type":"number" },
+    "at": { "type":"string" },
+    "vehicle_id": { "type":"string" }
+  }
+};
+
+let webSocket = new WebSocket('ws://127.0.0.1:9292/');
+
+webSocket.onmessage = (event) => {
+  var location = JSON.parse(event.data);
+  console.log(jsonSchema.validate(location, schema));
+}
+```
+
+
+## Setup
+
+## Docker
+
+```bash
+$ docker-compose build # to build the images
+$ docker-compose up    # to start the services
+```
+
+## Local
+
+### Pre-requisites
 - Redis
+- MongoDB
 
-## Infrastructure
-
-Infrastructure
-	- Dockerized solution (which could run later on a K8s cluster for instance).
-	- Deployed on Heroku (as an alternative).
-
-### Run on Docker
+### Instalation
 
 ```bash
-$ docker-compose build # to build the image
-$ docker-compose up    # to start the container
+$ git clone https://github.com/jcfausto/d2d-backend.git
+$ cd d2d-backend
+$ bundle install
 ```
 
-or
+### Test before running
+
+Notes:
+- Make sure you have MongoDB running on your machine at ```localhost:27017```.
+- During tests, redis-server will start and stop.
+
+
+To make sure everything works fine, run the tests before running the services.
 
 ```bash
-$ docker-compose up --build # to build the image and start
-                            # the container right after the build.
+$ rake test
 ```
 
-### Rake Tasks
+### Running
 
-#### Start the API server
+Notes:
+- Make sure you have Redis running and available at ```localhost:6379```
+- You'll need 3 terminal windows for running the application.
 
 ```bash
-rake start:api
+# First terminal: start the api
+$ rake start:api
 ```
-
-#### Start the API Consumer Service
 
 ```bash
-rake start:consumers
+# Second terminal: start the consumers
+$ rake start:consumers
 ```
-
-#### Start the Streaming Service
-```bash
-ruby api-streaming/init.rb start
-```
-
-Note: Not sure why it doesn't work using a Rake task. To be investigated.
-
-#### Run API tests
 
 ```bash
-rake test
+# Third terminal: start the streaming server
+$ rake start:streaming
 ```
+
+### Using the service
+
+There are a few ways you can test the service.
+
+1. Running door2door's driver simulator.
+2. Running a performance test.
+3. Manually.
+
+#### Running door2door simulator
+See: [Driver Simulator Instructions](https://github.com/door2door-io/d2d-code-challenges/tree/master/resources/driver-simulator)
 
 #### Run API Performance Tests
 
-Performance tests using Apache Benchmark can be done by executing the command below:
+The performance of the API can be verified using [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) to simulate concurrency and load.
+
+Run the command below to test the API with the following parameters:
+|Parameter|value|
+|-|-|
+|# concurrent clients|100|
+|# requests|20.000|
 
 ```bash
-rake perftest
+$ rake perftest
 ```
-
-Default parameters are: 2000 requests being made by 100 concurrent clients. Each client will fire 20 request and they'll do that in parallel.
-
-### Pre-commit hook
-
-There's a pre-commit hook that will lint the project and will test it before allowing the commit.
-
-If you're not using pre-commit hooks yet, after cloning this repo, execute the command below:
-
-```bash
-$ cp pre-commit .git/hooks/
-```
-
-If you're using pre-commit hooks already, copy the content of the pre-commit into your .git/hooks/pre-commit hook file.
-
-# Notes (WIP)
-
-Namespaces in Redis - This will keep data organized and easy to query.
-	- registry - Containing the registered vehicles.
-		○ Ex: registry:"vehicle":"abc123"
-	- position - Containing the last reported vehicle position
