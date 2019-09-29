@@ -16,5 +16,5 @@ task :perftest do
   sh %( sleep 1 )
   sh %( curl -X POST --header 'Content-Type: application/x-www-form-urlencoded' --header 'Accept: application/json' -d 'id=67209670-1788-43a6-affb-c18058df1031' 'http://127.0.0.1:3000/api/v1/vehicles' )
   sh %( sleep 1 )
-  sh %( ab -p ./lib/support/benchmark.json -T 'application/json' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json' -c 100 -n 2000 'http://127.0.0.1:3000/api/v1/vehicles/67209670-1788-43a6-affb-c18058df1031/locations' )
+  sh %( ab -p ./lib/support/benchmark.json -T 'application/json' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json' -c 100 -n 20000 'http://127.0.0.1:3000/api/v1/vehicles/67209670-1788-43a6-affb-c18058df1031/locations' )
 end
