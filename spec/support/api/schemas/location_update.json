@@ -2,8 +2,8 @@
   "type": "object",
   "required": ["lat", "lng", "at", "vehicle_id"],
   "properties": {
-    "lat": { "type":"float" },
-    "lng": { "type":"float" },
+    "lat": { "type":"number" },
+    "lng": { "type":"number" },
     "at": { "type":"string" },
     "vehicle_id": { "type":"string" }
   }
