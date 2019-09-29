@@ -7,7 +7,8 @@ describe StorageService do
   let(:location) { Location.new(54.53, 13.014) }
   let(:vehicle) { Vehicle.new(uuid) }
   let(:notification_time) { Time.now.iso8601 }
-  let(:params) { { vehicle: vehicle, location: location, notification_time: notification_time } }
+  let(:city_manager) { CityManager.new }
+  let(:params) { { vehicle: vehicle, location: location, notification_time: notification_time, city_manager: city_manager } }
   let(:location_notification) { LocationNotification.new(params) }
 
   describe 'initialization' do

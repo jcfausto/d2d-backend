@@ -7,7 +7,9 @@ describe LocationNotification do
   let(:location) { Location.new(54.53, 13.014) }
   let(:vehicle) { Vehicle.new(uuid) }
   let(:notification_time) { Time.now.iso8601 }
-  let(:params) { { vehicle: vehicle, location: location, notification_time: notification_time } }
+  let(:city_manager) { CityManager.new }
+  let(:bearing) { Bearing.new(179.17694405683142) }
+  let(:params) { { vehicle: vehicle, location: location, notification_time: notification_time, city_manager: city_manager } }
   let(:location_notification) { LocationNotification.new(params) }
 
   describe 'initialization' do
@@ -26,6 +28,10 @@ describe LocationNotification do
 
       it 'should initialize notification time' do
         expect(location_notification.notification_time).to eq(notification_time)
+      end
+
+      it 'should set correct bearing' do
+        expect(location_notification.bearing).to eq(bearing)
       end
     end
 

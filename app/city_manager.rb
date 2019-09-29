@@ -10,7 +10,7 @@
 # from the ./config directory into a
 # @config object.
 class CityManager
-  attr_reader :config
+  attr_reader :config, :central_point
 
   def initialize
     set_env_if_not_defined

@@ -4,6 +4,7 @@
   "properties": {
     "lat": { "type":"number" },
     "lng": { "type":"number" },
+    "bearing": { "type":"number" },
     "at": { "type":"string" },
     "vehicle_id": { "type":"string" }
   }

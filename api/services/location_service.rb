@@ -35,6 +35,7 @@ class LocationService < BaseService
     hash[:vehicle] = Vehicle.new(params[:id])
     hash[:location] = Location.new(params[:lat], params[:lng])
     hash[:notification_time] = params[:at].to_s
+    hash[:city_manager] = @city_manager
     hash
   end
 end

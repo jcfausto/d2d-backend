@@ -8,4 +8,8 @@ class Location
     @lat = lat
     @lng = lng
   end
+
+  def ==(other)
+    return self.lat == other.lat && self.lng == other.lng
+  end
 end

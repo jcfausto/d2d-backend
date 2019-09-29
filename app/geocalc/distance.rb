@@ -3,7 +3,7 @@
 # Geo calculations.
 # Using the Haversine formula to calculate distances
 # Arguments:
-#  point_one, point_two, type: GeoPoint
+#  point_one, point_two, type: Location
 # Note: partially extracted from geocoder gem
 #       partially implemented by myself
 module GeoCalc

@@ -15,6 +15,14 @@ describe CityManager do
     it 'should load configurations from city_manager.yml' do
       expect(city_manager.config).not_to eq(nil)
     end
+
+    it 'should allow access to the central point' do
+      city_manager_yml = YAML.load_file(File.join('./config', 'city_manager.yml'))
+      config = city_manager_yml[ENV['RACK_ENV']]
+      central_point = Location.new(config['central_point']['lat'],
+                                   config['central_point']['lng'])
+      expect(city_manager.central_point).to eq(central_point)
+    end
   end
 
   describe 'location validation' do

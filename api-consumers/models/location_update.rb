@@ -10,5 +10,6 @@ class LocationUpdate
   field :vehicle_id, type: String
   field :lat, type: Float
   field :lng, type: Float
+  field :bearing, type: Float
   field :at, type: Time
 end
