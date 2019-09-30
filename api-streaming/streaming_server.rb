@@ -57,7 +57,7 @@ class StreamingServer
   def subscribe_to_redis!
     ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] ||= 'locations'
     redis_url = ENV['REDIS_URL'] || ENV['REDIS_URL_DEV']
-    puts redis_url
+    @log.info "Redis URL: #{redis_url}"
     @redis = EM::Hiredis.connect(redis_url)
     @pubsub = @redis.pubsub
     @pubsub.subscribe(ENV['VEHICLE_LOCATION_REDIS_CHANNEL'])
