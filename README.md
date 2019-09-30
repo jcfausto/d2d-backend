@@ -175,10 +175,11 @@ $ yarn start
 The performance of the API can be verified using [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) to simulate concurrency and load.
 
 Run the command below to test the API with the following parameters:
-|Parameter|value|
-|-|-|
-|# concurrent clients|100|
-|# requests|20.000|
+
+|Parameter            |value  |
+|---------------------|-------|
+|# concurrent clients |100    |
+|# requests           |20.000 |
 
 ```bash
 $ rake perftest
