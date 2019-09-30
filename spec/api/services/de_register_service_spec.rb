@@ -10,7 +10,7 @@ describe DeRegisterService do
   describe 'De-registration' do
     it 'should de-register a vehicle' do
       service.call(vehicle_id)
-      expect(Redis.current.get("#{namespace}:#{vehicle_id}")).to eq(nil)
+      expect(Redis.new.get("#{namespace}:#{vehicle_id}")).to eq(nil)
     end
   end
 end

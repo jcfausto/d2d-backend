@@ -18,7 +18,7 @@ class LocationNotification
     @vehicle = params[:vehicle]
     @location = params[:location]
     @notification_time = params[:notification_time]
-    set_bearing!(@location)
+    calculate_and_set_bearing!(@location)
   end
 
   def as_json
@@ -34,7 +34,7 @@ class LocationNotification
   private
 
   # Sets the @bearing based on the location
-  def set_bearing!(location)
+  def calculate_and_set_bearing!(location)
     @bearing = GeoCalc.bearing_between(@city_manager.central_point, location)
   end
 

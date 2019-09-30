@@ -13,7 +13,7 @@ class Bearing
   end
 
   def ==(other)
-    return self.value == other.value
+    @value == other.value
   end
 
   private

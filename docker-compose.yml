@@ -3,27 +3,78 @@ version: '3'
 services:
   redis:
     image: redis:5.0-alpine
-    container_name: redis
+    container_name: redis-db
+    ports:
+      - "6379:6379"
+    networks:
+      - redis-net
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
     volumes:
       - ./redis:/data
     restart: always
 
+  mongodb:
+    image: bitnami/mongodb:latest
+    container_name: monbodb
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-web
     image: d2d/api
     container_name: d2d-api
     ports:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
+    environment:
+      - PORT=3000
+      - REDIS_URL=redis://redis
     healthcheck:
       test: curl --fail -s http://localhost:3000/api/v1/vehicles/health || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
-    links:
+    networks:
+      - redis-net
+    depends_on:
       - redis
+
+  consumers:
+    build:
+      context: .
+      dockerfile: Dockerfile-consumers
+    image: d2d/consumers
+    container_name: d2d-consumers
+    networks:
+      - redis-net
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - redis
+      - mongodb
+
+  streaming:
+    build:
+      context: .
+      dockerfile: Dockerfile-streaming
+    image: d2d/streaming
+    container_name: d2d-streaming
+    networks:
+      - redis-net
+    ports:
+      - "9292:9292"
+    volumes:
+      - .:/usr/src/app
     environment:
-      - REDIS_URL=redis://redis
+      - PORT=9292
+      - REDIS_URL=redis://redis-db:6379
+    depends_on:
+      - redis
+
+networks:
+  redis-net:

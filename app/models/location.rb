@@ -10,6 +10,6 @@ class Location
   end
 
   def ==(other)
-    return self.lat == other.lat && self.lng == other.lng
+    @lat == other.lat && @lng == other.lng
   end
 end

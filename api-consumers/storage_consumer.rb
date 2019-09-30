@@ -9,9 +9,11 @@ require_relative 'services/storage_service'
 # on permanent storage
 class StorageConsumer
   def initialize
-    @redis = Redis.new
-    @channel = ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] || 'locations'
     @log = Logger.new(STDOUT)
+    redis_url = ENV['REDIS_URL'] || ENV['REDIS_URL_DEV']
+    @log.debug "Redis URL: #{redis_url}"
+    @redis = Redis.new(url: redis_url)
+    @channel = ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] || 'locations'
   end
 
   def start
@@ -27,9 +29,9 @@ class StorageConsumer
   def subscribe
     @redis.subscribe(@channel) do |on|
       @log.info "Subscribed to channel ##{@channel}"
-      on.message do |_channel, msg|
-        @log.debug msg
-        StorageService.new.call(msg)
+      on.message do |_channel, message|
+        @log.debug message
+        StorageService.new.call(message)
       end
     end
   end

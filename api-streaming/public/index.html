@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>door2door vehicle streaming dashboard</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/json-schema@0.2.5/lib/validate.min.js"></script>
+</head>
+<body>
+	<div id="mapid" style="width: 1024px; height: 768px;"></div>
+<script>
+		let vehicles = new Map()
+		let mymap = L.map('mapid').setView([52.53, 13.403], 13)
+		let host = location.origin.replace(/^http/, 'ws')
+		let webSocket = new WebSocket(host)
+
+		const schema = {
+			"type": "object",
+			"required": ["lat", "lng", "at", "vehicle_id"],
+			"properties": {
+				"lat": { "type":"number" },
+				"lng": { "type":"number" },
+				"bearing": { "type":"number" },
+				"at": { "type":"string" },
+				"vehicle_id": { "type":"string" }
+			}
+		};
+
+		webSocket.onmessage = function (event) {
+			console.log(event.data)
+			const location = JSON.parse(event.data)
+			console.log(jsonSchema.validate(location, schema))
+			schemaValidation = jsonSchema.validate(location, schema)
+
+			if (schemaValidation.valid) {
+				vehicle_id = location["vehicle_id"]
+				const lat = location["lat"]
+				const lng = location["lng"]
+				const bearing = location["bearing"]
+				let vehicle = vehicles.get(vehicle_id)
+
+				if (vehicle) {
+					newLatLng = new L.LatLng(lat, lng)
+					vehicle.setLatLng(newLatLng).update()
+					console.log(`vehicle updated: ${vehicle_id}`)
+				} else {
+					let marker = L.marker([lat, lng])
+						.bindPopup(`<strong>VehicleID: ${vehicle_id}</strong><br/><span>Bearing: ${bearing}<span>`)
+						.addTo(mymap);
+					vehicles.set(vehicle_id, marker)
+					console.log(`vehicle created: ${vehicle_id}`)
+				}
+			}
+		}
+
+		webSocket.onclose = function (event) {
+			vehicles.forEach((marker, vehicle_id) => {
+				mymap.removeLayer(marker);
+				console.log(`Removing vehicle ${vehicle_id}`)
+			})
+		}
+
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			id: 'mapbox.streets'
+		}).addTo(mymap);
+
+		L.circle([52.53, 13.403], 3500, {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.1
+		}).addTo(mymap);
+</script>
+</body>
+</html>

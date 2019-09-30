@@ -1,9 +1,10 @@
 AllCops:
   Exclude:
-    - './swagger-ui/'
+    - 'public/frontend/config.ru'
     - 'config.ru'
     - './lib/tasks/*.rake'
     - './app/geocalc/distance.rb'
+    - './app/geocalc/bearing.rb'
 
 Metrics/BlockLength:
   Exclude:

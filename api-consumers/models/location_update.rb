@@ -5,7 +5,7 @@ require 'mongoid'
 # Mongoid document model for a location
 class LocationUpdate
   include Mongoid::Document
-  store_in collection: :locations, database: :d2d
+  store_in collection: :locations
 
   field :vehicle_id, type: String
   field :lat, type: Float

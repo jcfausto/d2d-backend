@@ -7,6 +7,6 @@ describe Bearing do
   let(:point_two) { Location.new(0, 1) }
 
   it 'should be equal to 90 degrees clockwise from true north' do
-    expect(GeoCalc::bearing_between(point_one, point_two).value.round).to eq(90)
+    expect(GeoCalc.bearing_between(point_one, point_two).value.round).to eq(90)
   end
 end

@@ -16,5 +16,7 @@ WORKDIR $APP_HOME
 ADD . $APP_HOME
 RUN bundle install --jobs 20 --retry 5
 
+# This is ignored by Heroku. The app must listen on $PORT
 EXPOSE 3000
-CMD ["rake", "start"]
+
+CMD rackup --port $PORT -o 0.0.0.0

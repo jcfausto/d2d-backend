@@ -54,3 +54,4 @@ build-iPhoneSimulator/
 *.rdb
 
 .DS_store
+public/frontend/node_modules/

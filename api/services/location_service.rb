@@ -22,7 +22,9 @@ class LocationService < BaseService
 
   def publish
     message = @location_notification.as_json
-    Redis.current.publish(location_channel, message)
+    redis_url = ENV['REDIS_URL'] || ENV['REDIS_URL_DEV']
+    puts redis_url
+    Redis.new(url: redis_url).publish(location_channel, message)
   end
 
   def valid?

@@ -22,9 +22,11 @@ The solution is composed of 3 components.
 
 ### Vehicles API
 
+[Live demo on heroku](https://d2d-backend-api.herokuapp.com)
+
 **Version:** 1
 
-[API Specification](https://github.com/jcfausto/d2d-backend/)
+[API Specification](https://d2d-backend-api.herokuapp.com)
 
 This API offer following services.
 
@@ -38,9 +40,11 @@ This API offer following services.
 | GET | /api/v1/vehicles/health || {"status":"OK"} | Healthcheck |
 | POST | /api/v1/vehicles	| ```{"id":"some-uuid"}``` | No content | Registers a vehicle |
 | DELETE | /api/v1/vehicles/:uuid	|| No content | De-registers a vehicle |
-| POST | /api/v1/vehicles/:uuid/locations	|| {"status":"OK"} | Receive vehicle location updates |
+| POST | /api/v1/vehicles/:uuid/locations	|| No content | Receive vehicle location updates |
 
 ### Streaming Server
+
+[Demo on heroku](https://d2d-backend-streaming-server.herokuapp.com)
 
 WebSocket server that streams vehicle location updates to connected clients.
 
@@ -55,6 +59,7 @@ JSON Objects are streamed to clients according to the following schema:
   "properties": {
     "lat": { "type":"number" },
     "lng": { "type":"number" },
+    "bearing": { "type":"number" },
     "at": { "type":"string" },
     "vehicle_id": { "type":"string" }
   }
@@ -73,6 +78,7 @@ const schema = {
   "properties": {
     "lat": { "type":"number" },
     "lng": { "type":"number" },
+    "bearing": { "type":"number" },
     "at": { "type":"string" },
     "vehicle_id": { "type":"string" }
   }
@@ -93,7 +99,7 @@ webSocket.onmessage = (event) => {
 
 ```bash
 $ docker-compose build # to build the images
-$ docker-compose up    # to start the services
+$ docker-compose up    # to start the services (-d to start in daemon mode)
 ```
 
 ## Local
@@ -155,6 +161,15 @@ There are a few ways you can test the service.
 #### Running door2door simulator
 See: [Driver Simulator Instructions](https://github.com/door2door-io/d2d-code-challenges/tree/master/resources/driver-simulator)
 
+Note: There's a super simple frontend at ```/public/frontend/``` that can be used for visualizing the streaming of locations.
+
+```bash
+# To install the packages
+$ yarn
+# To run the app
+$ yarn start
+```
+
 #### Run API Performance Tests
 
 The performance of the API can be verified using [Apache Bench](https://httpd.apache.org/docs/2.4/programs/ab.html) to simulate concurrency and load.
@@ -168,3 +183,6 @@ Run the command below to test the API with the following parameters:
 ```bash
 $ rake perftest
 ```
+
+Samples:
+[Local test execution](support/performance-tests-running-on-docker-local-machine.png) with all services running on Docker locally.

@@ -17,6 +17,11 @@ gem 'rack'
 gem 'redis', '>= 3.2.0'
 gem 'require_all'
 
+gem 'em-http-request'
+gem 'faye-websocket'
+gem 'sinatra'
+gem 'thin'
+
 group :development do
   gem 'rubocop', '~> 0.74.0', require: false
 end

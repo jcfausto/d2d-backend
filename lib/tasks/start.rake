@@ -13,7 +13,7 @@ namespace :start do
 
   desc 'Start Streaming API'
   task :streaming do
-    sh %( ruby api-streaming/init.rb start )
+    sh %( puma api-streaming/config.ru -p 9292 )
   end
 end
 

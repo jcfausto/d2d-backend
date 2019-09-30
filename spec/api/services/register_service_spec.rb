@@ -10,7 +10,7 @@ describe RegisterService do
   describe 'Registration' do
     it 'should register a vehicle' do
       service.call(vehicle_id)
-      expect(Redis.current.get("#{namespace}:#{vehicle_id}")).to eq('true')
+      expect(Redis.new.get("#{namespace}:#{vehicle_id}")).to eq('true')
     end
   end
 end
