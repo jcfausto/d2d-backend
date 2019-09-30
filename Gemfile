@@ -5,8 +5,8 @@ ruby '2.6.3'
 
 gem 'dotenv'
 gem 'em-hiredis'
-gem 'em-websocket'
 gem 'eventmachine'
+gem 'faye-websocket'
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
@@ -16,11 +16,6 @@ gem 'puma'
 gem 'rack'
 gem 'redis', '>= 3.2.0'
 gem 'require_all'
-
-gem 'em-http-request'
-gem 'faye-websocket'
-gem 'sinatra'
-gem 'thin'
 
 group :development do
   gem 'rubocop', '~> 0.74.0', require: false
