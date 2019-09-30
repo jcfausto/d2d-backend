@@ -159,9 +159,21 @@ $ rake start:streaming
 
 There are a few ways you can test the service.
 
-1. Running door2door's driver simulator.
+1. Running door2door's driver simulator. **
 2. Running a performance test.
 3. Manually.
+
+** The method that does the requests has to be changed to include the path ```/api/v1``` as demonstrated below.
+
+```bash
+const req = http.request(
+    { …
+      path: `/api/v1${path}`,
+      …
+      }
+   …
+  );
+```
 
 #### Running door2door simulator
 See: [Driver Simulator Instructions](https://github.com/door2door-io/d2d-code-challenges/tree/master/resources/driver-simulator)
