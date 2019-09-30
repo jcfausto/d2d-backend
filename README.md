@@ -40,7 +40,7 @@ This API offer following services.
 | GET | /api/v1/vehicles/health || {"status":"OK"} | Healthcheck |
 | POST | /api/v1/vehicles	| ```{"id":"some-uuid"}``` | No content | Registers a vehicle |
 | DELETE | /api/v1/vehicles/:uuid	|| No content | De-registers a vehicle |
-| POST | /api/v1/vehicles/:uuid/locations	|| No content | Receive vehicle location updates |
+| POST | /api/v1/vehicles/:uuid/locations	|```{"lat":52.53, "lng":13.403, "at":"2019-09-30T10:22:23+0200", "id":"some-uuid"}```| No content | Receive vehicle location updates |
 
 ### Streaming Server
 
