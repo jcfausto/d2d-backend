@@ -210,5 +210,5 @@ Samples:
 
 Assumptions:
 
-1) There's not validation if the vehicle is registered when the location update endpoint is called as it was defined that the vehicle will never contact this endpoint without having registered first.
+1) There's no validation if the vehicle is registered when the location update endpoint is called as it was defined that the vehicle will never contact this endpoint without having registered first.
 
