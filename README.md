@@ -55,7 +55,7 @@ JSON Objects are streamed to clients according to the following schema:
 ```json
 {
   "type": "object",
-  "required": ["lat", "lng", "at", "vehicle_id"],
+  "required": ["lat", "lng", "bearing", "at", "vehicle_id"],
   "properties": {
     "lat": { "type":"number" },
     "lng": { "type":"number" },
@@ -74,7 +74,7 @@ Example:
 
 const schema = {
   "type": "object",
-  "required": ["lat", "lng", "at", "vehicle_id"],
+  "required": ["lat", "lng", "bearing", "at", "vehicle_id"],
   "properties": {
     "lat": { "type":"number" },
     "lng": { "type":"number" },
