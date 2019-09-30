@@ -152,6 +152,11 @@ $ rake start:streaming
 
 ### Using the service
 
+- The API can be reached at [http://localhost:3000](http://localhost:3000)
+- The Streaming Server can be reached at [http://localhost:9292](http://localhost:9292)
+  - It will accept WebSocket connections.
+  - It will provide a webpage at ```/``` to visualize vehicle locations that are being streamed.
+
 There are a few ways you can test the service.
 
 1. Running door2door's driver simulator.
