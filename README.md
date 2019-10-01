@@ -18,7 +18,7 @@ The solution is composed of 3 components.
 - Technologies
 	- Redis: for the store and pub/sub mechanism.
 	- MongoDB: for the permanent storage.
-	- Eventmachine and WebSockets for the Streaming Server.
+	- WebSockets for the Streaming Server.
 
 ### Vehicles API
 

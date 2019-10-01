@@ -5,7 +5,6 @@ ruby '2.6.3'
 
 gem 'dotenv'
 gem 'em-hiredis'
-gem 'eventmachine'
 gem 'faye-websocket'
 gem 'grape'
 gem 'grape-entity'
