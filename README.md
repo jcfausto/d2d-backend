@@ -8,7 +8,7 @@ The solution is composed of 3 components.
 - Storage Consumer
 - Streaming Server
 
-![alt text](support/solution-overview.png)
+![alt text](docs/images/solution-overview.png)
 
 #### Tech Stack
 
@@ -203,7 +203,7 @@ $ rake perftest
 ```
 
 Samples:
-[Local test execution](support/performance-tests-running-on-docker-local-machine.png) with all services running on Docker locally.
+[Local test execution](docs/images/performance-tests-running-on-docker-local-machine.png) with all services running on Docker locally.
 
 
 #### Final notes
