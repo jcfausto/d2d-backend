@@ -5,11 +5,12 @@ require 'spec_helper'
 describe LocationNotification do
   let(:uuid) { '8b4778c6-9b44-4ae5-bf30-50d90d0b8949' }
   let(:location) { Location.new(54.53, 13.014) }
+  let(:last_location) { Location.new(54.53, 13.014) }
   let(:vehicle) { Vehicle.new(uuid) }
   let(:notification_time) { Time.now.iso8601 }
   let(:city_manager) { CityManager.new }
-  let(:bearing) { Bearing.new(179.17694405683142) }
-  let(:params) { { vehicle: vehicle, location: location, notification_time: notification_time, city_manager: city_manager } }
+  let(:bearing) { Bearing.new(90.0) }
+  let(:params) { { vehicle: vehicle, location: location, last_location: last_location, notification_time: notification_time, city_manager: city_manager } }
   let(:location_notification) { LocationNotification.new(params) }
 
   describe 'initialization' do

@@ -18,15 +18,16 @@ module GeoCalc
     # Formula expect values in radians
     lat1x = point_one_lat * GeoCalc::Constants::RAD
     lon1x = point_one_lng * GeoCalc::Constants::RAD
+    lat2x = point_two_lat * GeoCalc::Constants::RAD
     lon2x = point_two_lng * GeoCalc::Constants::RAD
 
     # Deltas values are radians as required
     # by the formula
     dlon = lon2x - lon1x
 
-    y = Math.sin(dlon) * Math.cos(point_two_lat)
-    x = Math.cos(lat1x) * Math.sin(point_two_lat) -
-        Math.sin(lat1x) * Math.cos(point_two_lat) * Math.cos(dlon)
+    y = Math.sin(dlon) * Math.cos(lat2x)
+    x = Math.cos(lat1x) * Math.sin(lat2x) -
+        Math.sin(lat1x) * Math.cos(lat2x) * Math.cos(dlon)
 
     bearing = Math.atan2(x, y)
     # Answer is given in radians counterclockwise from due east.

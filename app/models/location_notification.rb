@@ -16,9 +16,10 @@ class LocationNotification
     validate_params(params)
     @city_manager = params[:city_manager]
     @vehicle = params[:vehicle]
+    @last_location = params[:last_location]
     @location = params[:location]
     @notification_time = params[:notification_time]
-    calculate_and_set_bearing!(@location)
+    calculate_and_set_bearing!
   end
 
   def as_json
@@ -33,9 +34,9 @@ class LocationNotification
 
   private
 
-  # Sets the @bearing based on the location
-  def calculate_and_set_bearing!(location)
-    @bearing = GeoCalc.bearing_between(@city_manager.central_point, location)
+  # Sets the @bearing based on the last_location and current location
+  def calculate_and_set_bearing!
+    @bearing = GeoCalc.bearing_between(@last_location, @location)
   end
 
   def validate_params(params)
@@ -47,18 +48,22 @@ class LocationNotification
   def validate_required_params(params)
     raise_invalid_param unless params.keys.include? :vehicle
     raise_invalid_param unless params.keys.include? :location
+    raise_invalid_param unless params.keys.include? :last_location
     raise_invalid_param unless params.keys.include? :notification_time
   end
 
   def validate_param_types(params)
     raise_invalid_param unless params[:vehicle].is_a? Vehicle
     raise_invalid_param unless params[:location].is_a? Location
+    raise_invalid_param unless params[:last_location].is_a? Location
     raise_invalid_param unless params[:notification_time].is_a? String
-    begin
-      Time.iso8601(params[:notification_time])
-    rescue ArgumentError
-      raise_invalid_param
-    end
+    validate_notification_time(params[:notification_time])
+  end
+
+  def validate_notification_time(value)
+    Time.iso8601(value)
+  rescue ArgumentError
+    raise_invalid_param
   end
 
   def validate_city_manager_present(params)
