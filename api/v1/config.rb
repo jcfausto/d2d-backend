@@ -5,8 +5,18 @@ module APIv1
   # Will return the operation parameters
   class Config < Grape::API
     resource :config do
+      helpers do
+        def allow_cors_when_in_development
+          # To allow running the client locally and having access
+          # to the API, otherwise CORS will block the call
+          return unless ENV['RACK_ENV'] == 'development'
+
+          header 'Access-Control-Allow-Origin', '*'
+        end
+      end
+
       before do
-        header 'Access-Control-Allow-Origin', '*'
+        allow_cors_when_in_development
         header 'Content-Type', 'application/json'
       end
 
