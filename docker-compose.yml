@@ -76,5 +76,22 @@ services:
     depends_on:
       - redis
 
+  web:
+    build:
+      context: ./public/frontend
+      dockerfile: ../../Dockerfile-frontend
+    image: d2d/web
+    container_name: d2d-web
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - PORT=3001
+      - REACT_APP_LOCATION_API_URL=http://127.0.0.1:3000/api/v1/config
+      - REACT_APP_STREAMING_API_URL=ws://127.0.0.1:9292
+    depends_on:
+      - streaming
+
 networks:
   redis-net:

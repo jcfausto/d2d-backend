@@ -15,6 +15,11 @@ namespace :start do
   task :streaming do
     sh %( puma api-streaming/config.ru -p 9292 )
   end
+
+  desc 'Start Web Client'
+  task :web do
+    sh %( yarn --cwd ./public/frontend start )
+  end
 end
 
 desc 'Default task: start:api'
