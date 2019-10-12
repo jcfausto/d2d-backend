@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 describe LocationService do
   # park center treptower park 6+ km away from ref point
   # 52.490999, 13.457921
@@ -21,24 +23,44 @@ describe LocationService do
     }
   end
 
+  before(:each) do
+    @redis = Redis.new
+    allow(Redis).to receive(:new).and_return(@redis)
+  end
+
   describe 'initialization' do
     it 'should initialize without errors' do
       expect { LocationService.new }.not_to raise_error
     end
   end
 
-  describe 'publish' do
-    # it 'should publish valid locations' do
-    #   @redis = Redis.new
-    #   allow(@redis).to receive(:publish)
-    #   LocationService.new.call(valid_location)
-    #   expect(@redis).to have_received(:publish)
-    # end
+  describe 'Call' do
+    context 'when valid location' do
+      it 'should store last valid location' do
+        allow(@redis).to receive(:set)
+        LocationService.new.call(valid_location)
+        expect(@redis).to have_received(:set)
+      end
 
-    # it 'should not publish invalid locations' do
-    #   allow(Redis).to receive(:publish)
-    #   LocationService.new.call(invalid_location)
-    #   expect(Redis).not_to have_received(:publish)
-    # end
+      it 'should publish' do
+        allow(@redis).to receive(:publish)
+        LocationService.new.call(valid_location)
+        expect(@redis).to have_received(:publish)
+      end
+    end
+
+    context 'when invalid location' do
+      it 'should not store' do
+        allow(@redis).to receive(:set)
+        LocationService.new.call(invalid_location)
+        expect(@redis).not_to have_received(:set)
+      end
+
+      it 'should not publish' do
+        allow(@redis).to receive(:publish)
+        LocationService.new.call(invalid_location)
+        expect(@redis).not_to have_received(:publish)
+      end
+    end
   end
 end

@@ -10,12 +10,13 @@
 # from the ./config directory into a
 # @config object.
 class CityManager
-  attr_reader :config, :central_point
+  attr_reader :config, :central_point, :limit_radius_in_km
 
   def initialize
     set_env_if_not_defined
     load_config!
     set_central_point!
+    set_limit_radius_in_km!
   end
 
   def valid_location?(location)
@@ -27,12 +28,16 @@ class CityManager
   private
 
   def location_within_city_boundaries?
-    distance_from_central_point <= @config['limit_radius_in_km'].to_f
+    distance_from_central_point <= @limit_radius_in_km
   end
 
   def distance_from_central_point
     distance = GeoCalc.distance_between(@central_point, @location)
     distance.in_km
+  end
+
+  def set_limit_radius_in_km!
+    @limit_radius_in_km = @config['limit_radius_in_km'].to_f
   end
 
   def set_central_point!

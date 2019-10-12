@@ -9,6 +9,7 @@ module APIv1
     format :json
     prefix :api
 
+    mount APIv1::Config
     mount APIv1::VehicleRegistry
     mount APIv1::VehicleLocation
 
