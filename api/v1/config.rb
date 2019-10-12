@@ -10,7 +10,7 @@ module APIv1
         header 'Content-Type', 'application/json'
       end
 
-      desc 'Operation Parameters'
+      desc 'Return current operation parameters'
       get do
         @city_manager = CityManager.new
         {
