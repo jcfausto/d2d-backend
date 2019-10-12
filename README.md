@@ -2,9 +2,10 @@
 
 ## API Overview
 
-The solution is composed of 3 components.
+The solution is composed by 4 components.
 
 - Vehicles API
+- Config API
 - Storage Consumer
 - Streaming Server
 
@@ -18,7 +19,8 @@ The solution is composed of 3 components.
 - Technologies
 	- Redis: for the store and pub/sub mechanism.
 	- MongoDB: for the permanent storage.
-	- WebSockets for the Streaming Server.
+	- WebSockets: for the Streaming Server.
+  - React: for the frontend.
 
 ### Vehicles API
 
@@ -28,10 +30,10 @@ The solution is composed of 3 components.
 
 [API Specification](https://d2d-backend-api.herokuapp.com)
 
-This API offer following services.
+This API offers the following services:
 
 - Vehicle registration / de-registration.
-- Vehicle location update
+- Vehicle location update.
 
 **Supported Operations**
 
@@ -41,6 +43,22 @@ This API offer following services.
 | POST | /api/v1/vehicles	| ```{"id":"some-uuid"}``` | No content | Registers a vehicle |
 | DELETE | /api/v1/vehicles/:uuid	|| No content | De-registers a vehicle |
 | POST | /api/v1/vehicles/:uuid/locations	|```{"lat":52.53, "lng":13.403, "at":"2019-09-30T10:22:23+0200", "id":"some-uuid"}```| No content | Receive vehicle location updates |
+
+### Config API
+
+[Live demo on heroku](https://d2d-backend-api.herokuapp.com)
+
+**Version:** 1
+
+[API Specification](https://d2d-backend-api.herokuapp.com)
+
+This API provides access to the service configuration parameters to clients.
+
+**Supported Operations**
+
+| Verb | Endpoint | Payload | Response | Description |
+| -----------| --------------|----|----|------------ |
+| GET | /api/v1/config || {"centralPoint": {"lat": 52.53, "lng": 13.403}, "limitRadiusInKm": 3.5} | Service Operation Parameters |
 
 ### Streaming Server
 
@@ -92,7 +110,6 @@ webSocket.onmessage = (event) => {
 }
 ```
 
-
 ## Setup
 
 ## Docker
@@ -110,20 +127,32 @@ $ docker-compose up    # to start the services (-d to start in daemon mode)
 
 ### Instalation
 
+#### Backend
+
 ```bash
 $ git clone https://github.com/jcfausto/d2d-backend.git
 $ cd d2d-backend
 $ bundle install
 ```
 
-### Test before running
+#### Frontend
+
+Note: Available at ```/public/frontend/```.
+
+```bash
+$ cd public/frontend
+# To install the packages
+$ yarn
+```
+
+### Testing
 
 Notes:
 - Make sure you have MongoDB running on your machine at ```localhost:27017```.
 - During tests, redis-server will start and stop.
 
 
-To make sure everything works fine, run the tests before running the services.
+To make sure everything works fine, please run the tests before running the services.
 
 ```bash
 $ rake test
@@ -133,7 +162,7 @@ $ rake test
 
 Notes:
 - Make sure you have Redis running and available at ```localhost:6379```
-- You'll need 3 terminal windows for running the application.
+- You'll need 4 terminal windows for running the application.
 
 ```bash
 # First terminal: start the api
@@ -150,12 +179,17 @@ $ rake start:consumers
 $ rake start:streaming
 ```
 
+```bash
+# Fourth terminal: start the web client
+$ rake start:web
+```
+
 ### Using the service
 
 - The API can be reached at [http://localhost:3000](http://localhost:3000)
 - The Streaming Server can be reached at [http://localhost:9292](http://localhost:9292)
   - It will accept WebSocket connections.
-  - It will provide a webpage at ```/``` to visualize vehicle locations that are being streamed.
+- The WEB client can be reached at [http://localhost:3001](http://localhost:3001)
 
 There are a few ways you can test the service.
 
@@ -177,15 +211,6 @@ const req = http.request(
 
 #### Running door2door simulator
 See: [Driver Simulator Instructions](https://github.com/door2door-io/d2d-code-challenges/tree/master/resources/driver-simulator)
-
-Note: There's a super simple frontend at ```/public/frontend/``` that can be used for visualizing the streaming of locations.
-
-```bash
-# To install the packages
-$ yarn
-# To run the app
-$ yarn start
-```
 
 #### Run API Performance Tests
 
