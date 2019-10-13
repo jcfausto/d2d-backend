@@ -11,6 +11,7 @@ class StreamingServer
     @channel = ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] || 'locations'
     @redis_host = ENV['REDIS_HOST'] || 'localhost'
     @redis_port = ENV['REDIS_PORT'] || 6379
+    @redis_pass = ENV['REDIS_PASS'] || nil
     set_logger!
   end
 
@@ -62,7 +63,9 @@ class StreamingServer
 
   def subscribe_to_redis!
     @log.info "Subscribing to Redis: #{@redis_host}:#{@redis_port} "
-    @pubsub = EM::Hiredis::PubsubClient.new(@redis_host, @redis_port).connect
+    @pubsub = EM::Hiredis::PubsubClient.new(@redis_host,
+                                            @redis_port,
+                                            @redis_pass).connect
     @pubsub.subscribe(@channel)
   end
 

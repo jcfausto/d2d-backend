@@ -11,6 +11,8 @@ cp Dockerfile-$1 Dockerfile
 
 if [ $1 = "web" ]; then
   heroku git:remote -a d2d-dashboard
+  heroku config:set REACT_APP_LOCATION_API_URL=https://d2d-backend-api.herokuapp.com/api/v1/config
+  heroku config:set REACT_APP_STREAMING_API_URL=wss://d2d-backend-streaming-server.herokuapp.com
 fi
 
 if [ $1 = "api" ]; then
