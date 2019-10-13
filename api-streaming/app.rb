@@ -8,10 +8,6 @@ App = lambda do |env|
     @server = StreamingServer.new(env)
     @server.start
     @server.rack_response
-  elsif env['REQUEST_PATH'] == '/'
-    Rack::Response.new(File.read('./api-streaming/public/index.html'),
-                       200,
-                       'Content-Type' => 'text/html')
   else
     [200, { 'Content-Type' => 'application/json' }, ['{"status":"healthy"}']]
   end
