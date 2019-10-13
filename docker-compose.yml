@@ -24,7 +24,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile-web
+      dockerfile: Dockerfile-api
     image: d2d/api
     container_name: d2d-api
     ports:
@@ -80,7 +80,7 @@ services:
   web:
     build:
       context: ./public/frontend
-      dockerfile: ../../Dockerfile-frontend
+      dockerfile: ../../Dockerfile-web
     image: d2d/web
     container_name: d2d-web
     ports:
