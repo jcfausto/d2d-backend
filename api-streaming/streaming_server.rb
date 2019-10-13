@@ -8,6 +8,9 @@ require 'logger'
 class StreamingServer
   def initialize(env)
     @env = env
+    @channel = ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] || 'locations'
+    @redis_host = ENV['REDIS_HOST'] || 'localhost'
+    @redis_port = ENV['REDIS_PORT'] || 6379
     set_logger!
   end
 
@@ -45,7 +48,10 @@ class StreamingServer
 
   def on_close
     @ws.on :close do |_event|
-      @log.info 'WebSocket connection closed'
+      @log.info 'Websocket connection closed'
+
+      @log.debug 'PubSub connection closed'
+      @pubsub.close_connection
     end
   end
 
@@ -55,12 +61,9 @@ class StreamingServer
   end
 
   def subscribe_to_redis!
-    ENV['VEHICLE_LOCATION_REDIS_CHANNEL'] ||= 'locations'
-    redis_url = ENV['REDIS_URL'] || ENV['REDIS_URL_DEV']
-    @log.info "Redis URL: #{redis_url}"
-    @redis = EM::Hiredis.connect(redis_url)
-    @pubsub = @redis.pubsub
-    @pubsub.subscribe(ENV['VEHICLE_LOCATION_REDIS_CHANNEL'])
+    @log.info "Subscribing to Redis: #{@redis_host}:#{@redis_port} "
+    @pubsub = EM::Hiredis::PubsubClient.new(@redis_host, @redis_port).connect
+    @pubsub.subscribe(@channel)
   end
 
   def start_message_streaming

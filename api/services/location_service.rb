@@ -25,17 +25,23 @@ class LocationService < BaseService
 
   def register_last_valid_location
     vehicle_id = @location_notification.vehicle.uuid
-    location = [
-      @location_notification.location.lat,
-      @location_notification.location.lng
-    ]
-    Redis.new(url: redis_url).set("#{@location_namespace}:#{vehicle_id}",
-                                  location)
+    location = @location_notification.location.coordinates
+    begin
+      redis = Redis.new(url: redis_url)
+      redis.set("#{@location_namespace}:#{vehicle_id}", location)
+    ensure
+      redis.close
+    end
   end
 
   def publish
     message = @location_notification.as_json
-    Redis.new(url: redis_url).publish(location_channel, message)
+    begin
+      redis = Redis.new(url: redis_url)
+      redis.publish(location_channel, message)
+    ensure
+      redis.close
+    end
   end
 
   def valid?
@@ -45,7 +51,12 @@ class LocationService < BaseService
 
   def last_valid_location(vehicle_id)
     redis_query = "#{@location_namespace}:#{vehicle_id}"
-    location = Redis.new(url: redis_url).get(redis_query)
+    begin
+      redis = Redis.new(url: redis_url)
+      location = redis.get(redis_query)
+    ensure
+      redis.close
+    end
     return unless location
 
     location = JSON.parse(location)
