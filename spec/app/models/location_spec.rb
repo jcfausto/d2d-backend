@@ -14,4 +14,8 @@ describe Location do
     expect(@location.lat).to eq(lat)
     expect(@location.lng).to eq(lng)
   end
+
+  it 'should return coordinates' do
+    expect(@location.coordinates).to eq([lat, lng])
+  end
 end

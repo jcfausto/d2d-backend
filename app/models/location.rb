@@ -9,6 +9,10 @@ class Location
     @lng = lng
   end
 
+  def coordinates
+    [@lat, @lng]
+  end
+
   def ==(other)
     @lat == other.lat && @lng == other.lng
   end
