@@ -2,12 +2,13 @@
 
 ## API Overview
 
-The solution is composed by 4 components.
+The solution is composed by 5 components.
 
 - Vehicles API
 - Config API
 - Storage Consumer
 - Streaming Server
+- Web Client
 
 ![alt text](docs/images/solution-overview.png)
 
@@ -59,6 +60,13 @@ This API provides access to the service configuration parameters to clients.
 | Verb | Endpoint | Payload | Response | Description |
 | -----------| --------------|----|----|------------ |
 | GET | /api/v1/config || {"centralPoint": {"lat": 52.53, "lng": 13.403}, "limitRadiusInKm": 3.5} | Service Operation Parameters |
+
+
+### Web Client
+
+[Demo on heroku](https://d2d-dashboard.herokuapp.com)
+
+A web client interface where you'll be able to visualize active vehicles (those with valid positions), their heading and the operation parameters currently applied to the system.
 
 ### Streaming Server
 
