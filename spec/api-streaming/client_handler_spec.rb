@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 
-describe StreamingServer do
+describe ClientConnectionHandler do
   describe 'initialization' do
     it 'should initialize without errors' do
-      expect { StreamingServer.new(ENV) }.not_to raise_error
+      expect { ClientConnectionHandler.new(ENV) }.not_to raise_error
     end
   end
 end

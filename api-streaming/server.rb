@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require_relative './streaming_server'
+require_relative './client_connection_handler'
 require 'faye/websocket'
 
-App = lambda do |env|
+Server = lambda do |env|
   if Faye::WebSocket.websocket?(env)
-    @server = StreamingServer.new(env)
-    @server.start
-    @server.rack_response
+    ClientConnectionHandler.new(env).start
   else
     [200, { 'Content-Type' => 'application/json' }, ['{"status":"healthy"}']]
   end
