@@ -1,6 +1,13 @@
 # door2door Backend Exercise
 
-## API Overview
+## Goals
+
+1. Collect the location and compute the navigation bearing of all vehicles in real-time.
+2. Broadcast the location & bearing updates of all vehicles to connected clients, like web or mobile applications.
+
+[Full spec here](https://github.com/door2door-io/d2d-code-challenges/tree/master/backend)
+
+## Solution
 
 The solution is composed by 5 components.
 
@@ -9,6 +16,8 @@ The solution is composed by 5 components.
 - Storage Consumer
 - Streaming Server
 - Web Client
+
+### Overview
 
 ![alt text](docs/images/solution-overview.png)
 
@@ -22,6 +31,8 @@ The solution is composed by 5 components.
 	- MongoDB: for the permanent storage.
 	- WebSockets: for the Streaming Server.
   - React: for the frontend.
+
+## APIs
 
 ### Vehicles API
 

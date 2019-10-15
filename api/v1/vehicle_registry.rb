@@ -10,7 +10,7 @@ module APIv1
         { health: 'OK' }
       end
 
-      desc 'Registers a vehicle'
+      desc 'Registers a vehicle', success: { code: 204 }
       params do
         requires :id, type: String, desc: 'Vehicle UUID'
       end
@@ -21,7 +21,7 @@ module APIv1
         status :internal_server_error
       end
 
-      desc 'De-registers a vehicle'
+      desc 'De-registers a vehicle', success: { code: 204 }
       params do
         requires :id, type: String, desc: 'Vehicle UUID'
       end

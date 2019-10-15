@@ -5,7 +5,7 @@ module APIv1
   # API responsible for receiving vehicle location updates
   class VehicleLocation < Grape::API
     resource :vehicles do
-      desc 'Receives a vehicle location update'
+      desc 'Receives a vehicle location update', success: { code: 204 }
       params do
         requires :id, type: String, desc: 'Vehicle UUID'
         requires :lat, type: Float, desc: 'Vehicle\'s latitude'
